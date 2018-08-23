@@ -1,3 +1,5 @@
+import { createStore } from 'redux'
+
 document.getElementById('addBtn').onclick = addTask
 document.getElementById('removeBtn').onclick = removeTask
 document.getElementById('clearBtn').onclick = clearTask
@@ -22,31 +24,6 @@ function reducer(state = initialState, action) {
             console.log('有人要做骚操作')
             return state;
     }
-}
-
-function createStore(reducer) {
-
-    let listeners = []
-    const subscribe = function (listener) {
-        listeners.push(listener)
-    }
-
-    let state = undefined
-    const getState = function () {
-        return state
-    }
-
-    const dispatch = function (action) {
-        state = reducer(state, action)
-        listeners.forEach(function (listener) {
-            listener()
-        })
-    }
-
-    // 默认执行一次做初始化
-    dispatch({})
-
-    return { getState, dispatch, subscribe }
 }
 
 const store = createStore(reducer)
