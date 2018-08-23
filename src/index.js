@@ -8,13 +8,16 @@ const initialState = {
 }
 
 function reducer(state = initialState, action) {
+    let newState
     switch (action.type) {
         case 'ADD_TASK':
-            state.taskCount = state.taskCount + 1;
-            return state;
+            // state.taskCount = state.taskCount + 1;
+            newState = {...state, taskCount: state.taskCount + 1}
+            return newState;
         case 'REMOVE_TASK':
-            state.taskCount = state.taskCount - 1;
-            return state;
+            // state.taskCount = state.taskCount - 1;
+            newState = {...state, taskCount: state.taskCount - 1}
+            return newState;
         default:
             console.log('有人要做骚操作')
             return state;
