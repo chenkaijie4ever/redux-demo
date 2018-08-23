@@ -23,18 +23,32 @@ function actionHandler(state, action) {
 
 function createStore(state, actionHandler) {
 
+    let listeners = []
+    const subscribe = function (listener) {
+        listeners.push(listener)
+    }
+
     const getState = function () {
         return state
     }
 
     const dispatch = function (action) {
         state = actionHandler(state, action)
+        listeners.forEach(function (listener) {
+            listener()
+        })
     }
 
-    return { getState, dispatch }
+    return { getState, dispatch, subscribe }
 }
 
 const store = createStore(appState, actionHandler)
+store.subscribe(function () {
+    render()
+})
+store.subscribe(function () {
+    console.log('Leader发了一封邮件，产品、开发 知道需求状态更新了')
+})
 
 function render() {
     const content = document.getElementById('content')
@@ -45,17 +59,14 @@ function render() {
 function addTask() {
     let action = {type: 'ADD_TASK'}
     store.dispatch(action)
-    render()
 }
 
 function removeTask() {
     let action = {type: 'REMOVE_TASK'}
     store.dispatch(action)
-    render()
 }
 
 function clearTask() {
     let action = {type: 'CLEAR_TASK'}
     store.dispatch(action)
-    render()
 }
