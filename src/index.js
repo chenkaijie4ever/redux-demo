@@ -7,7 +7,7 @@ const initialState = {
     taskCount: 0
 }
 
-function actionHandler(state = initialState, action) {
+function reducer(state = initialState, action) {
     switch (action.type) {
         case 'ADD_TASK':
             state.taskCount = state.taskCount + 1;
@@ -21,7 +21,7 @@ function actionHandler(state = initialState, action) {
     }
 }
 
-function createStore(actionHandler) {
+function createStore(reducer) {
 
     let listeners = []
     const subscribe = function (listener) {
@@ -34,7 +34,7 @@ function createStore(actionHandler) {
     }
 
     const dispatch = function (action) {
-        state = actionHandler(state, action)
+        state = reducer(state, action)
         listeners.forEach(function (listener) {
             listener()
         })
@@ -46,7 +46,7 @@ function createStore(actionHandler) {
     return { getState, dispatch, subscribe }
 }
 
-const store = createStore(actionHandler)
+const store = createStore(reducer)
 store.subscribe(function () {
     render()
 })
