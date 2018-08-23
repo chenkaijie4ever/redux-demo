@@ -3,11 +3,11 @@ document.getElementById('removeBtn').onclick = removeTask
 document.getElementById('clearBtn').onclick = clearTask
 
 
-const appState = {
+const initialState = {
     taskCount: 0
 }
 
-function actionHandler(state, action) {
+function actionHandler(state = initialState, action) {
     switch (action.type) {
         case 'ADD_TASK':
             state.taskCount = state.taskCount + 1;
@@ -21,13 +21,14 @@ function actionHandler(state, action) {
     }
 }
 
-function createStore(state, actionHandler) {
+function createStore(actionHandler) {
 
     let listeners = []
     const subscribe = function (listener) {
         listeners.push(listener)
     }
 
+    let state = undefined
     const getState = function () {
         return state
     }
@@ -39,15 +40,15 @@ function createStore(state, actionHandler) {
         })
     }
 
+    // 默认执行一次做初始化
+    dispatch({})
+
     return { getState, dispatch, subscribe }
 }
 
-const store = createStore(appState, actionHandler)
+const store = createStore(actionHandler)
 store.subscribe(function () {
     render()
-})
-store.subscribe(function () {
-    console.log('Leader发了一封邮件，产品、开发 知道需求状态更新了')
 })
 
 function render() {
