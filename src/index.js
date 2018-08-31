@@ -1,4 +1,4 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 
 document.getElementById('addBtn').onclick = addTask
 document.getElementById('removeBtn').onclick = removeTask
@@ -26,7 +26,7 @@ function reducer(state = initialState, action) {
     }
 }
 
-const store = createStore(reducer)
+const store = createStore(reducer, compose(applyMiddleware(), window.devToolsExtension ? window.devToolsExtension() : () => {}))
 store.subscribe(function () {
     render()
 })
